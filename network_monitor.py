@@ -9,6 +9,8 @@ COMPANY_SERVER = {
     "Firmen-WLAN Router": "192.168.1.1"              # Typische Router-IP
 }
 
+# Prüft die Erreichbarkeit einer IP-Adresse.
+# Passt den Ping-Befehl automatisch an das Betriebssystem (Windows/Linux) an.
 def ping_server(ip):
     param = "-n" if platform.system().lower() == "windows" else "-c"
     befehl = f"ping {param} 1 {ip} > {os.devnull} 2>&1" if platform.system().lower() == "windows" else f"ping {param} 1 {ip} > /dev/null 2>&1"
