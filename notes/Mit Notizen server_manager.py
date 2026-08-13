@@ -49,12 +49,12 @@ def vm_erstellen(name, os_typ, ram, cpu):
     cursor.execute("SELECT SUM(ram_gb) FROM virtuelle_maschinen")
     
     # NOTIZ: .fetchone() holt die allererste Zeile des Ergebnisses. 
-    # Da SUM() nur einen einzigen Gesamtwert liefert, greifen wir mit [0] auf das erste Element des Ergebnisses zu.
-    ergebnis = cursor.fetchone()[0]
+    # Da SUM() nur einen einzigen Gesamtwert liefert, greifen wir auf das erste Element des Ergebnisses zu.
+    ergebnis = cursor.fetchone()
     
     # NOTIZ: Ein "Ternary Operator" (Kurz-If): Wenn die Datenbank komplett leer ist, liefert SQL den Wert "None".
     # Da man mit "None" nicht rechnen kann, wandeln wir es hier blitzschnell in eine 0 um.
-    aktueller_ram = ergebnis if ergebnis is not None else 0
+    aktueller_ram = ergebnis[0] if ergebnis[0] is not None else 0
     
     # FISI-Prüfung: Ist noch genug Platz auf dem Host?
     if aktueller_ram + ram > MAX_RAM:
@@ -91,6 +91,7 @@ def infrastruktur_anzeigen():
     for vm in vms:
         # NOTIZ: Da 'vm' ein Datentupel ist, greifen wir per Index auf die Spalten zu.
         # vm[5] holt den 'status' (Spalte 6 in der DB, da wir bei 0 anfangen zu zählen: 0=id, 1=name, ..., 5=status).
+        # random.randint(4, 38) würfelt bei jedem Aufruf eine neue Prozentzahl für die CPU aus.
         auslastung = f" | CPU-Last: {random.randint(4, 38)}%" if vm[5] == "Online" else ""
         print(f"ID: {vm[0]} | Name: {vm[1]} [{vm[2]}] | RAM: {vm[3]}GB | Cores: {vm[4]} | Status: {vm[5]}{auslastung}")
     print("==================================================")
@@ -116,3 +117,51 @@ def vm_loeschen(vm_id):
     conn.commit()
     conn.close()
     print(f"\n[X] WARNUNG: Server mit ID {vm_id} wurde dauerhaft deprovisioniert (gelöscht).")
+
+# ==============================================================================
+# HAUPTPROGRAMM / KONSOLEN-MENÜ (Lern-Version)
+# ==============================================================================
+datenbank_einrichten()
+
+while True:
+    print("\n==================================================")
+    print("      ENTERPRISE INFRASTRUCTURE MANAGER          ")
+    print("==================================================")
+    print(" 1) Alle aktiven Server auflisten")
+    print(" 2) Neuen virtuellen Server (VM) bereitstellen")
+    print(" 3) Virtuellen Server STARTEN (Online)")
+    print(" 4) Virtuellen Server STOPPEN (Offline)")
+    print(" 5) Virtuellen Server LÖSCHEN (Deprovisionieren)")
+    print(" 6) System-Manager beenden")
+    print("==================================================")
+    
+    auswahl = input("Aktion wählen (1-6): ")
+    
+    if auswahl == "1":
+        infrastruktur_anzeigen()
+    elif auswahl == "2":
+        name = input("Server-Name (z.B. SQL_Datenbank oder Web_Server): ")
+        os_typ = input("Betriebssystem (Ubuntu_Linux / Windows_Server): ")
+        # NOTIZ: int() wandelt die Eingabe (String) in eine Ganzzahl um, da wir später damit rechnen müssen (RAM + ram)
+        ram = int(input("Arbeitsspeicher (GB RAM): "))
+        cpu = int(input("Prozessorkerne (vCPUs): "))
+        vm_erstellen(name, os_typ, ram, cpu)
+    elif auswahl == "3":
+        vm_id = int(input("ID des zu startenden Servers: "))
+        vm_status_aendern(vm_id, "Online")
+    elif auswahl == "4":
+        vm_id = int(input("ID des zu stoppenden Servers: "))
+        vm_status_aendern(vm_id, "Offline")
+    elif auswahl == "5":
+        vm_id = int(input("ID des zu LÖSCHENDEN Servers eingeben: "))
+        bestaetigung = input(f"Möchtest du Server ID {vm_id} wirklich unwiderruflich löschen? (ja/nein): ")
+        # NOTIZ: .lower() wandelt "JA" oder "Ja" in "ja" um. Macht die Eingabe unempfindlich gegen Groß-/Kleinschreibung.
+        if bestaetigung.lower() == "ja":
+            vm_loeschen(vm_id)
+        else:
+            print("\n[-] Löschvorgang abgebrochen.")
+    elif auswahl == "6":
+        print("\n[V] System-Manager sicher heruntergefahren. Auf Wiedersehen!")
+        break # NOTIZ: Bricht die Endlosschleife ab und beendet damit das gesamte Programm
+    else:
+        print("\n[!] FEHLER: Ungültige Menüauswahl.")
