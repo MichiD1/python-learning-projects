@@ -4,7 +4,7 @@ import time
 
 # Die Server-Liste der Firma (Hier simulieren wir wichtige Systeme)
 COMPANY_SERVER = {
-    "Zentraler Datenbank-Server": "127.0.0.1",       # Dein eigener PC (Localhost)
+    "Zentraler Datenbank-Server": "127.0.0.1",       # Lokaler PC (Localhost)
     "Externes Cloud-Gateway": "8.8.8.8",            # Google DNS (zum Testen als Online-Server)
     "Firmen-WLAN Router": "192.168.1.1"              # Typische Router-IP
 }
