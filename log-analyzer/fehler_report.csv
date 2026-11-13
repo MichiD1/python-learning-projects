@@ -1,0 +1,5 @@
+Zeile;Schweregrad;Eintrag
+2;WARNING;2026-11-13 08:15:44 WARNING Hohe CPU-Auslastung auf Server-01 (88%)
+3;ERROR;2026-11-13 08:22:10 ERROR Datenbankverbindung fehlgeschlagen (Timeout)
+5;CRITICAL;2026-11-13 09:47:19 CRITICAL Festplattenspeicher auf /var/log unter 5%
+6;ERROR;2026-11-13 10:11:02 ERROR Benutzer-Authentifizierung fehlgeschlagen (IP: [IP-ANONYMISIERT])

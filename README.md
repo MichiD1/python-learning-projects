@@ -32,6 +32,16 @@ Ein interaktives Programm zur Verwaltung von Firmen-Hardware sowie kleine Konsol
 Eine strukturierte Onboarding-Checkliste und Leitlinie für moderne Firmennetzwerke.
 - **Inhalt**: Dokumentation von Best Practices zur Einhaltung von Datensicherheit (DSGVO), logischer Netzwerktrennung (VLAN) und Disaster-Recovery-Protokollen bei Systemausfällen.
 
+### 6. IT-Logfile-Analyzer & CSV-Report Generator ( /log-analyzer )
+
+Ein automatisiertes Python-Werkzeug zur Auswertung von Server-Logdateien, Berechnung von Fehlerquoten und DSGVO-konformen Berichterstellung.
+
+- **Technologien**: Python (`pathlib`, `csv`, `re` / Regular Expressions)
+- **Funktionen**:
+  - **Fehler-Erkennung & Statistik**: Durchsucht Server-Logs automatisiert nach `WARNING`, `ERROR` und `CRITICAL` und berechnet die kritische Fehlerquote in Prozent.
+  - **DSGVO-Datenschutz**: Erkennt IPv4-Adressen per RegEx und ersetzt sie vor dem Export automatisch durch `[IP-ANONYMISIERT]`.
+  - **CSV-Export**: Erstellt einen Excel-kompatiblen Fehlerbericht (`;`-getrennt, UTF-8) für die IT-Administration.
+
 ---
 
 ## 🛠️ Installation & Setup

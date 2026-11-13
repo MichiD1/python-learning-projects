@@ -1,0 +1,6 @@
+2026-11-13 08:12:01 INFO System erfolgreich gestartet
+2026-11-13 08:15:44 WARNING Hohe CPU-Auslastung auf Server-01 (88%)
+2026-11-13 08:22:10 ERROR Datenbankverbindung fehlgeschlagen (Timeout)
+2026-11-13 09:05:33 INFO Backup erfolgreich abgeschlossen
+2026-11-13 09:47:19 CRITICAL Festplattenspeicher auf /var/log unter 5%
+2026-11-13 10:11:02 ERROR Benutzer-Authentifizierung fehlgeschlagen (IP: 192.0.2.1)
